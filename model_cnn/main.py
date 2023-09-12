@@ -4,11 +4,11 @@ import time
 import cv2
 import matplotlib.pyplot as plt
 import torch
-from model import densenet121_model
-from dataset import get_loaders, ChestXRayDataset, get_transformation
-
 from constants import ROOT_DIR
+from dataset import ChestXRayDataset, get_loaders, get_transformation
+from model import densenet121_model
 from training import train_model
+
 
 torch.manual_seed(1)
 

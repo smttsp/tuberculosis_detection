@@ -1,8 +1,8 @@
 import torch.nn as nn
 import torch.optim as optim
+from constants import DEVICE
 from torch.optim import lr_scheduler
 from torchvision import models
-from constants import DEVICE
 
 
 def densenet121_model(user_args):

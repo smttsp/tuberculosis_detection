@@ -4,7 +4,6 @@ References:
 - https://stackoverflow.com/questions/44377358/how-can-i-display-the-test-name-after-the-test-using-pytest
 - https://docs.pytest.org/en/stable/fixture.html
 """
-import pathlib
 
 import pytest
 
@@ -18,6 +17,6 @@ def env_setup(monkeypatch):
     """
     # monkeypatch.setenv(
     #     "GCLOUD_PROJECT",
-    #     "cariesdetection",
+    #     "samet-project",
     # )
     return None
