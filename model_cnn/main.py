@@ -11,8 +11,7 @@ torch.manual_seed(1)
 ROOT_DIR = "/users/samet/Documents/data/TB_Chest_Radiography_Database"
 
 
-def main(root_dir=ROOT_DIR):
-    start_time = time.time()
+def parse_args(root_dir=ROOT_DIR):
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--num_epochs", type=int, default=5, help="Number of training epochs"
@@ -41,6 +40,11 @@ def main(root_dir=ROOT_DIR):
         default=False,
         help="Using Dense Net model",
     )
+
+
+def main():
+    print(f"TRAINING START TIME: {time.time()}")
+    args = parse_args()
 
 
 if __name__ == "__main__":
