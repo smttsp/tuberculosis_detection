@@ -6,7 +6,7 @@ actual building and distribution of the `claim_analytics` package.
 from distutils.core import setup
 
 setup(
-    name="example_template",
+    name="model_cnn",
     version="1.0.1",
-    packages=["example_template"],
+    packages=["model_cnn"],
 )
