@@ -1,4 +1,3 @@
-import argparse
 import os
 import random
 import re
@@ -98,3 +97,30 @@ def get_transformation():
         ]
     )
     return train_transform, valid_transform
+
+
+def split_dataset(dataset, split_ratios):
+    if len(split_ratios) != 3:
+        raise Exception("split ratios should be a list with 3 elements")
+    if not len(dataset):
+        raise Exception("Dataset cannot be empty")
+
+    data_sizes = [
+        int(s / sum(split_ratios) * len(dataset)) for s in split_ratios
+    ]
+
+    train_set, test_set, val_set = random_split(dataset, data_sizes)
+    return train_set, test_set, val_set
+
+
+def get_loaders(train_set, test_set, val_set, batch_size):
+    train_loader = torch.utils.data.DataLoader(
+        train_set, batch_size=batch_size, shuffle=True, num_workers=2
+    )
+    test_loader = torch.utils.data.DataLoader(
+        test_set, batch_size=batch_size, shuffle=True, num_workers=2
+    )
+    val_loader = torch.utils.data.DataLoader(
+        val_set, batch_size=batch_size, shuffle=False, num_workers=2
+    )
+    return train_loader, test_loader, val_loader
