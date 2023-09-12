@@ -47,16 +47,12 @@ torch.manual_seed(0)
 
 class ChestXRayDataset(torch.utils.data.Dataset):
     def __init__(self, image_dirs, transform):
-        def get_images(class_name):
-            images = [x for x in os.listdir(image_dirs[class_name]) if x.lower().endswith("png")]
-            print(f"Found {len(images)}{class_name}")
-            return images
-
         self.images = {}
         self.class_names = ["Normal", "Tuberculosis"]
-        for c in self.class_names:
-            self.images[c] = get_images(c)
         self.image_dirs = image_dirs
+
+        for c in self.class_names:
+            self.images[c] = self.get_images(c)
         self.transform = transform
 
     def __len__(self):
@@ -69,6 +65,15 @@ class ChestXRayDataset(torch.utils.data.Dataset):
         image_path = os.path.join(self.image_dirs[class_name], image_name)
         image = Image.open(image_path).convert("RGB")
         return self.transform(image), self.class_names.index(class_name)
+
+    def get_images(self, class_name):
+        images = [
+            x
+            for x in os.listdir(self.image_dirs[class_name])
+            if x.lower().endswith("png")
+        ]
+        print(f"Found {len(images)}{class_name}")
+        return images
 
 
 def get_transformation():
