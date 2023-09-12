@@ -1,47 +1,14 @@
 import os
 import random
-import re
-import shutil
-import time
-from collections import defaultdict
-from glob import glob
 
-import cv2
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
 import torch
-import torch.optim as optim
 import torchvision
 from PIL import Image
-from torch.optim import lr_scheduler
 from torch.utils.data import DataLoader, random_split
-from torchvision import datasets, models, transforms
-from tqdm import tqdm
-
-
-# from cv2 import imread, createCLAHE
+from torchvision import transforms
 
 
 torch.manual_seed(0)
-
-# from os import rename
-# from os.path import isfile
-#
-# import torch.nn as nn
-# import torch.nn.functional as F
-# from numpy import pi as PI, sqrt
-# from PIL.ImageFilter import GaussianBlur
-# from scipy.special import comb
-# from sklearn.metrics import auc, roc_curve
-
-
-# from keras.models import model_from_json
-# import tensorflow as tf
-# from tensorflow import keras
-# from keras.preprocessing.image import ImageDataGenerator
-# from keras.models import load_model
-# import helper
 
 
 class ChestXRayDataset(torch.utils.data.Dataset):
