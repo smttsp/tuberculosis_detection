@@ -9,7 +9,7 @@ import pathlib
 import pytest
 
 
-@pytest.fixture(scope="session",)
+@pytest.fixture(scope="session")
 def env_setup(monkeypatch):
     """Setup Environment Variables through PyTest's `monkeypatch` feature.
 
