@@ -3,11 +3,9 @@ import os
 import time
 
 import torch
-
+from constants import DEVICE
 
 torch.manual_seed(0)
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def train_model(
@@ -17,8 +15,10 @@ def train_model(
     scheduler,
     train_loader,
     val_loader,
-    num_epochs=25,
+    user_args,
 ):
+    num_epochs = user_args.num_epochs
+
     since = time.time()
     tr = {"train": train_loader, "val": val_loader}
 
@@ -41,8 +41,8 @@ def train_model(
 
             # Iterate over data.
             for inputs, labels in tr[phase]:
-                inputs = inputs.to(device)
-                labels = labels.to(device)
+                inputs = inputs.to(DEVICE)
+                labels = labels.to(DEVICE)
 
                 # zero the parameter gradients
                 optimizer.zero_grad()
