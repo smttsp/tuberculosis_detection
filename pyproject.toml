@@ -29,7 +29,7 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.black]
-line-length = 100
+line-length = 80
 target-version = ["py38"]
 exclude = '''
 /(
@@ -50,7 +50,7 @@ exclude = '''
 
 [tool.isort]
 py_version = "38"
-line_length = 100
+line_length = 80
 lines_after_imports = 2
 lines_between_sections = 1
 multi_line_output = 3
