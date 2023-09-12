@@ -12,10 +12,16 @@ torch.manual_seed(0)
 
 
 class ChestXRayDataset(torch.utils.data.Dataset):
-    def __init__(self, image_dirs, transform):
+    def __init__(self, root_dir, transform):
         self.images = {}
         self.class_names = ["Normal", "Tuberculosis"]
-        self.image_dirs = image_dirs
+        self.image_dirs = {cls: os.path.join(root_dir, cls) for cls in self.class_names}
+        # image_dirs = {
+        #     'Normal': root_dir + '/Normal',
+        #     'Tuberculosis': root_dir + '/Tuberculosis'
+        # }
+        #
+        # self.image_dirs = image_dirs
 
         for c in self.class_names:
             self.images[c] = self.get_images(c)
@@ -80,7 +86,8 @@ def split_dataset(dataset, split_ratios):
     return train_set, test_set, val_set
 
 
-def get_loaders(train_set, test_set, val_set, batch_size):
+def get_loaders(dataset, split_ratios, batch_size=1):
+    train_set, test_set, val_set = split_dataset(dataset, split_ratios)
     train_loader = torch.utils.data.DataLoader(
         train_set, batch_size=batch_size, shuffle=True, num_workers=2
     )
