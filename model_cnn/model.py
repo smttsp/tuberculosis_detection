@@ -1,8 +1,10 @@
+import os
+
+import torch
 import torch.nn as nn
-from constants import DEVICE
-from torch.optim import SGD, lr_scheduler
 import torchvision
-# from torchvision import models
+from constants import DEVICE, RUNTIME_STR
+from torch.optim import SGD, lr_scheduler
 
 
 def densenet121_model(user_args):
@@ -17,3 +19,14 @@ def densenet121_model(user_args):
     scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
 
     return model, criterion, optimizer, scheduler
+
+
+def save_model(cfg, model, runtime_str=RUNTIME_STR):
+    project_name = cfg.project_name
+    save_dir = cfg.training.save_dir
+
+    os.makedirs(save_dir, exist_ok=True)
+    save_path = os.path.join(save_dir, f"{project_name}_{runtime_str}.pth")
+    torch.save(obj=model, f=save_path)
+
+    return None
