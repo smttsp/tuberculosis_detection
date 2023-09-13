@@ -2,7 +2,7 @@ import copy
 import time
 
 import torch
-from constants import DEVICE
+from constants import DEVICE, DatasetType
 from model import save_model
 
 
@@ -22,7 +22,7 @@ def train_model(
     num_epochs = user_args.num_epochs
 
     since = time.time()
-    tr = {"train": train_loader, "val": val_loader}
+    tr = {DatasetType.train: train_loader, DatasetType.val: val_loader}
 
     best_model_wts = copy.deepcopy(model.state_dict())
     best_acc = 0.0
@@ -32,8 +32,9 @@ def train_model(
         print("-" * 10)
 
         # Each epoch has a training and validation phase
-        for phase in ["train", "val"]:
-            if phase == "train":
+        for phase in [DatasetType.train, DatasetType.val]:
+            is_training = phase == DatasetType.train
+            if is_training:
                 model.train()  # Set model to training mode
             else:
                 model.eval()  # Set model to evaluate mode
@@ -51,20 +52,20 @@ def train_model(
 
                 # forward
                 # track history if only in train
-                with torch.set_grad_enabled(phase == "train"):
+                with torch.set_grad_enabled(is_training):
                     outputs = model(inputs)
                     _, preds = torch.max(outputs, 1)
                     loss = criterion(outputs, labels)
 
                     # backward + optimize only if in training phase
-                    if phase == "train":
+                    if is_training:
                         loss.backward()
                         optimizer.step()
 
                 # statistics
                 running_loss += loss.item() * inputs.size(0)
                 running_corrects += torch.sum(preds == labels.data)
-            if phase == "train":
+            if is_training:
                 scheduler.step()
 
             epoch_loss = running_loss / len(tr[phase].dataset)
@@ -73,7 +74,7 @@ def train_model(
             print(f"{phase} Loss: {epoch_loss:.4f} Acc: {epoch_acc:.4f}")
 
             # deep copy the model
-            if phase == "val" and epoch_acc > best_acc:
+            if not is_training and epoch_acc > best_acc:
                 best_acc = epoch_acc
                 best_model_wts = copy.deepcopy(model.state_dict())
                 save_model(config, best_model_wts)

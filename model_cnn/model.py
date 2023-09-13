@@ -5,10 +5,13 @@ import torch.nn as nn
 import torchvision
 from constants import DEVICE, RUNTIME_STR
 from torch.optim import SGD, lr_scheduler
+from torchvision.models.densenet import DenseNet121_Weights
 
 
 def densenet121_model(user_args):
-    model = torchvision.models.densenet121(weights=True)
+    model = torchvision.models.densenet121(
+        weights=DenseNet121_Weights.IMAGENET1K_V1
+    )
     num_features = model.classifier.in_features
     model.classifier = nn.Sequential(nn.Linear(num_features, 2), nn.Sigmoid())
     model = model.to(DEVICE)
