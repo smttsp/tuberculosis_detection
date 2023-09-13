@@ -18,12 +18,6 @@ class ChestXRayDataset(torch.utils.data.Dataset):
         self.image_dirs = {
             cls: os.path.join(root_dir, cls) for cls in self.class_names
         }
-        # image_dirs = {
-        #     'Normal': root_dir + '/Normal',
-        #     'Tuberculosis': root_dir + '/Tuberculosis'
-        # }
-        #
-        # self.image_dirs = image_dirs
 
         for c in self.class_names:
             self.images[c] = self.get_images(c)

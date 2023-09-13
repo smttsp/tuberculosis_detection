@@ -67,9 +67,9 @@ def main():
         val_loader,
         user_args=user_args,
     )
+    return densenet_121
 
 
 if __name__ == "__main__":
-    im = cv2.imread(f"{ROOT_DIR}/Normal/Normal-100.png")
-    plt.imshow(im)
-    main()
+    densenet_121 = main()
+    print("finito")
