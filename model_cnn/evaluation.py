@@ -1,6 +1,8 @@
 import pandas
 import torch
 from sklearn.metrics import confusion_matrix
+from PIL import Image
+from dataset import get_test_transform
 
 
 def get_evaluation_metrics(y_pred, y_true):
@@ -54,10 +56,14 @@ def pytorch_predict(model, test_loader, device):
     return df
 
 
-def inference(model, image_path):
-    import torch
+def do_inference(model, image_path):
+    transform = get_test_transform()
+    image = Image.open(image_path).convert("RGB")
 
-    input_data = torch.tensor([1, 2, 3])
+    input_data = transform(image).unsqueeze(0)
 
-    output = model(input_data)
+    model.eval()
+    with torch.no_grad():
+        output = model(input_data)
+
     return output
