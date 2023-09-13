@@ -1,3 +1,4 @@
+project_name: "densenet121"
 training:
   data_dir: "/users/samet/Documents/data/TB_Chest_Radiography_Database"
   num_epochs: 15

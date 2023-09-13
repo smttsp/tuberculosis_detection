@@ -3,6 +3,7 @@ import time
 
 import torch
 from constants import DEVICE
+from model import save_model
 
 
 torch.manual_seed(0)
@@ -15,8 +16,9 @@ def train_model(
     scheduler,
     train_loader,
     val_loader,
-    user_args,
+    config,
 ):
+    user_args = config.training
     num_epochs = user_args.num_epochs
 
     since = time.time()
@@ -74,6 +76,7 @@ def train_model(
             if phase == "val" and epoch_acc > best_acc:
                 best_acc = epoch_acc
                 best_model_wts = copy.deepcopy(model.state_dict())
+                save_model(config, best_model_wts)
 
         print()
 
