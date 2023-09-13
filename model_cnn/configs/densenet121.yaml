@@ -7,3 +7,4 @@ training:
   l2: true  # regularization: l2
   bond_dim: 5  # MPS Bond dimension
   save_dir: "./saved_models/densenet121/"
+  split_ratio: [0.7, 0.15, 0.15]
