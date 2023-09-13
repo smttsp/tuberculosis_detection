@@ -1,8 +1,5 @@
 import argparse
-import time
-
-import cv2
-import matplotlib.pyplot as plt
+from datetime import datetime
 import torch
 from constants import ROOT_DIR
 from dataset import ChestXRayDataset, get_loaders, get_transformation
@@ -47,7 +44,7 @@ def parse_args():
 
 
 def main():
-    print(f"TRAINING START TIME: {time.time()}")
+    print(f"TRAINING START TIME: {datetime.now().isoformat()}")
     user_args = parse_args()
 
     model, criterion, optimizer, scheduler = densenet121_model(user_args)
@@ -67,6 +64,8 @@ def main():
         val_loader,
         user_args=user_args,
     )
+    print(f"TRAINING END TIME: {datetime.now().isoformat()}")
+
     return densenet_121
 
 
