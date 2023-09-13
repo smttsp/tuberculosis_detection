@@ -1,0 +1,8 @@
+training:
+  data_dir: "/users/samet/Documents/data/TB_Chest_Radiography_Database"
+  num_epochs: 15
+  batch_size: 32
+  lr: 5e-4
+  l2: true  # regularization: l2
+  bond_dim: 5  # MPS Bond dimension
+  save_dir: "./_model/fashion_mnist/"

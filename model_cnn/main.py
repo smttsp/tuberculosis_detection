@@ -5,6 +5,7 @@ from constants import ROOT_DIR
 from dataset import ChestXRayDataset, get_loaders, get_transformation
 from model import densenet121_model
 from training import train_model
+import hydra
 
 
 torch.manual_seed(1)
@@ -43,10 +44,12 @@ def parse_args():
     return user_args
 
 
-def main():
+@hydra.main(version_base=None, config_path="./configs", config_name="densenet121")
+def main(config):
     print(f"TRAINING START TIME: {datetime.now().isoformat()}")
-    user_args = parse_args()
+    # config = parse_args()
 
+    user_args = config.training
     model, criterion, optimizer, scheduler = densenet121_model(user_args)
 
     train_transform, valid_transform = get_transformation()
@@ -62,7 +65,7 @@ def main():
         scheduler,
         train_loader,
         val_loader,
-        user_args=user_args,
+        user_args=config.training,
     )
     print(f"TRAINING END TIME: {datetime.now().isoformat()}")
 
