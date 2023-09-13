@@ -57,8 +57,13 @@ def get_transform_main(dataset_type: DatasetType):
 
 class ChestXRayDataset(torch.utils.data.Dataset):
     def __init__(
-        self, image_dict, dataset_type: DatasetType, class_names=CLASS_NAMES
+        self,
+        root_dir,
+        image_dict,
+        dataset_type: DatasetType,
+        class_names=CLASS_NAMES,
     ):
+        self.root_dir = root_dir
         self.images = image_dict
         self.class_names = class_names
         self.transform = get_transform_main(dataset_type)
@@ -70,7 +75,7 @@ class ChestXRayDataset(torch.utils.data.Dataset):
         class_name = random.choice(self.class_names)
         index = index % len(self.images[class_name])
         image_name = self.images[class_name][index]
-        image_path = os.path.join(self.images[class_name], image_name)
+        image_path = os.path.join(self.root_dir, class_name, image_name)
         image = Image.open(image_path).convert("RGB")
         return self.transform(image), self.class_names.index(class_name)
 
@@ -114,8 +119,8 @@ def split_image_list(
     return train_images, val_images, test_images
 
 
-def get_single_loader(images, dataset_type, batch_size):
-    a_set = ChestXRayDataset(images, dataset_type=dataset_type)
+def get_single_loader(root_dir, images, dataset_type, batch_size):
+    a_set = ChestXRayDataset(root_dir, images, dataset_type=dataset_type)
     a_loader = DataLoader(
         a_set,
         batch_size=batch_size,
@@ -133,13 +138,22 @@ def get_loaders_main(
     )
 
     train_loader = get_single_loader(
-        train_images, dataset_type=DatasetType.train, batch_size=batch_size
+        root_dir,
+        train_images,
+        dataset_type=DatasetType.train,
+        batch_size=batch_size,
     )
     val_loader = get_single_loader(
-        val_images, dataset_type=DatasetType.train, batch_size=batch_size
+        root_dir,
+        val_images,
+        dataset_type=DatasetType.train,
+        batch_size=batch_size,
     )
     test_loader = get_single_loader(
-        test_images, dataset_type=DatasetType.train, batch_size=batch_size
+        root_dir,
+        test_images,
+        dataset_type=DatasetType.train,
+        batch_size=batch_size,
     )
 
     return train_loader, test_loader, val_loader
