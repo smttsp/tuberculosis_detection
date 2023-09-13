@@ -137,13 +137,13 @@ def get_loaders_main(
     val_loader = get_single_loader(
         root_dir,
         val_images,
-        dataset_type=DatasetType.train,
+        dataset_type=DatasetType.val,
         batch_size=batch_size,
     )
     test_loader = get_single_loader(
         root_dir,
         test_images,
-        dataset_type=DatasetType.train,
+        dataset_type=DatasetType.test,
         batch_size=batch_size,
     )
 
