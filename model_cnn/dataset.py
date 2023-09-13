@@ -73,67 +73,76 @@ class ChestXRayDataset(torch.utils.data.Dataset):
         class_name = random.choice(self.class_names)
         index = index % len(self.images[class_name])
         image_name = self.images[class_name][index]
-        image_path = os.path.join(self.image_dirs[class_name], image_name)
+        image_path = os.path.join(self.images[class_name], image_name)
         image = Image.open(image_path).convert("RGB")
         return self.transform(image), self.class_names.index(class_name)
 
     def get_images(self, class_name):
         images = [
             x
-            for x in os.listdir(self.image_dirs[class_name])
+            for x in os.listdir(self.images[class_name])
             if x.lower().endswith("png")
         ]
         print(f"Found {len(images)}{class_name}")
         return images
 
 
-def get_transformation():
-    train_transform = transforms.Compose(
-        [
-            transforms.RandomHorizontalFlip(),
-            transforms.Resize(size=(224, 224)),
-            transforms.RandomVerticalFlip(),
-            transforms.RandomRotation(20),
-            transforms.ToTensor(),
-            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-        ]
-    )
-
-    valid_transform = torchvision.transforms.Compose(
-        [
-            torchvision.transforms.Resize(size=(224, 224)),
-            torchvision.transforms.RandomHorizontalFlip(),
-            torchvision.transforms.RandomRotation(20),
-            torchvision.transforms.ToTensor(),
-            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-        ]
-    )
-    return train_transform, valid_transform
-
-
-def split_dataset(dataset, split_ratios):
-    if len(split_ratios) != 3:
+def split_image_list(
+    root_dir,
+    split_ratio=(0.7, 0.15, 0.15),
+    class_names=CLASS_NAMES,
+):
+    if len(split_ratio) != 3:
         raise Exception("split ratios should be a list with 3 elements")
-    if not len(dataset):
-        raise Exception("Dataset cannot be empty")
 
-    data_sizes = [
-        int(s / sum(split_ratios) * len(dataset)) for s in split_ratios
-    ]
+    image_dirs = {cls: os.path.join(root_dir, cls) for cls in class_names}
 
-    train_set, test_set, val_set = random_split(dataset, data_sizes)
-    return train_set, test_set, val_set
+    train_images = {}
+    val_images = {}
+    test_images = {}
+
+    for cls in class_names:
+        images = [
+            x for x in os.listdir(image_dirs[cls]) if x.lower().endswith("png")
+        ]
+        random.shuffle(images)  # Shuffle the images
+
+        n_train = int(len(images) * split_ratio[0])
+        n_val = int(len(images) * split_ratio[1])
+
+        train_images[cls] = images[:n_train]
+        val_images[cls] = images[n_train : n_train + n_val]
+        test_images[cls] = images[n_train + n_val :]
+
+    return train_images, val_images, test_images
 
 
-def get_loaders(dataset, split_ratios, batch_size=1):
-    train_set, test_set, val_set = split_dataset(dataset, split_ratios)
-    train_loader = DataLoader(
-        train_set, batch_size=batch_size, shuffle=True, num_workers=2
+def get_single_loader(images, dataset_type, batch_size):
+    a_set = ChestXRayDataset(images, dataset_type=dataset_type)
+    a_loader = DataLoader(
+        a_set,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=2,
     )
-    test_loader = DataLoader(
-        test_set, batch_size=batch_size, shuffle=True, num_workers=2
+    return a_loader
+
+
+def get_loaders_main(
+    root_dir, split_ratio, class_names=CLASS_NAMES, batch_size=1
+):
+    train_images, val_images, test_images = split_image_list(
+        root_dir, split_ratio, class_names
     )
-    val_loader = DataLoader(
-        val_set, batch_size=batch_size, shuffle=False, num_workers=2
+
+    train_loader = get_single_loader(
+        train_images, dataset_type=DatasetType.train, batch_size=batch_size
     )
+    val_loader = get_single_loader(
+        val_images, dataset_type=DatasetType.train, batch_size=batch_size
+    )
+    test_loader = get_single_loader(
+        test_images, dataset_type=DatasetType.train, batch_size=batch_size
+    )
+
     return train_loader, test_loader, val_loader
