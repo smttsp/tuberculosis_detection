@@ -2,10 +2,9 @@ import os
 import random
 
 import torch
-import torchvision
 from constants import CLASS_NAMES, DatasetType
 from PIL import Image
-from torch.utils.data import DataLoader, random_split
+from torch.utils.data import DataLoader
 from torchvision import transforms
 
 

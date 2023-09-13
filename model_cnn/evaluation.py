@@ -60,3 +60,4 @@ def inference(model, image_path):
     input_data = torch.tensor([1, 2, 3])
 
     output = model(input_data)
+    return output

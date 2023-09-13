@@ -3,7 +3,7 @@ from datetime import datetime
 
 import hydra
 import torch
-from constants import ROOT_DIR, DatasetType
+from constants import ROOT_DIR
 from dataset import get_loaders_main
 from model import densenet121_model
 from training import train_model
