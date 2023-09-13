@@ -14,6 +14,7 @@ def densenet121_model(user_args):
     )
     num_features = model.classifier.in_features
     model.classifier = nn.Sequential(nn.Linear(num_features, 2), nn.Sigmoid())
+
     model = model.to(DEVICE)
     criterion = nn.CrossEntropyLoss()
 

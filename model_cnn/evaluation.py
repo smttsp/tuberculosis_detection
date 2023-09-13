@@ -1,8 +1,8 @@
 import pandas
 import torch
-from sklearn.metrics import confusion_matrix
-from PIL import Image
 from dataset import get_test_transform
+from PIL import Image
+from sklearn.metrics import confusion_matrix
 
 
 def get_evaluation_metrics(y_pred, y_true):
