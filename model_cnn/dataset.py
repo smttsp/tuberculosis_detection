@@ -54,17 +54,15 @@ def get_transform_main(dataset_type: DatasetType):
         transform = get_test_transform()
 
     return transform
-class ChestXRayDataset(torch.utils.data.Dataset):
-    def __init__(self, root_dir, transform):
-        self.images = {}
-        self.class_names = ["Normal", "Tuberculosis"]
-        self.image_dirs = {
-            cls: os.path.join(root_dir, cls) for cls in self.class_names
-        }
 
-        for c in self.class_names:
-            self.images[c] = self.get_images(c)
-        self.transform = transform
+
+class ChestXRayDataset(torch.utils.data.Dataset):
+    def __init__(
+        self, image_dict, dataset_type: DatasetType, class_names=CLASS_NAMES
+    ):
+        self.images = image_dict
+        self.class_names = class_names
+        self.transform = get_transform_main(dataset_type)
 
     def __len__(self):
         return sum([len(self.images[c]) for c in self.class_names])
