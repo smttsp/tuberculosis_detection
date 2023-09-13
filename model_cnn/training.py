@@ -31,7 +31,7 @@ def train_model(
     best_acc = 0.0
 
     for epoch in range(num_epochs):
-        print(f"Epoch {epoch + 1}/{num_epochs}", "\n", "-" * 10)
+        print(f"Epoch {epoch + 1}/{num_epochs}")
 
         # Each epoch has a training and validation phase
         for phase in [DatasetType.train, DatasetType.val]:
@@ -70,10 +70,9 @@ def train_model(
             if is_training:
                 scheduler.step()
 
-            epoch_loss = running_loss / len(loader_dict[phase].dataset)
-            epoch_acc = running_corrects.double() / len(
-                loader_dict[phase].dataset
-            )
+            data_size = len(loader_dict[phase].dataset)
+            epoch_loss = running_loss / data_size
+            epoch_acc = running_corrects.double() / data_size
 
             print(f"{phase} Loss: {epoch_loss:.4f} Acc: {epoch_acc:.4f}")
 
@@ -83,7 +82,7 @@ def train_model(
                 best_model_wts = copy.deepcopy(model.state_dict())
                 save_model(config, best_model_wts)
 
-        print()
+        print("\n", "-" * 10)
 
     print_elapsed_time(since)
     print(f"Best val Acc: {best_acc:4f}")
