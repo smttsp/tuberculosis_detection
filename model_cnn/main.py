@@ -3,8 +3,8 @@ from datetime import datetime
 
 import hydra
 import torch
-from constants import ROOT_DIR
-from dataset import ChestXRayDataset, get_loaders, get_transformation
+from constants import ROOT_DIR, DatasetType
+from dataset import get_loaders_main
 from model import densenet121_model
 from training import train_model
 
@@ -54,11 +54,10 @@ def main(config):
     user_args = config.training
     model, criterion, optimizer, scheduler = densenet121_model(user_args)
 
-    train_transform, valid_transform = get_transformation()
-    dataset = ChestXRayDataset(root_dir=ROOT_DIR, transform=train_transform)
-
-    train_loader, test_loader, val_loader = get_loaders(
-        dataset, split_ratios=[0.7, 0.15, 0.15], batch_size=user_args.batch_size
+    train_loader, test_loader, val_loader = get_loaders_main(
+        root_dir=ROOT_DIR,
+        split_ratio=user_args.split_ratio,
+        batch_size=user_args.batch_size,
     )
     best_model = train_model(
         model,
