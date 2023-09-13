@@ -5,4 +5,4 @@ training:
   lr: 5e-4
   l2: true  # regularization: l2
   bond_dim: 5  # MPS Bond dimension
-  save_dir: "./_model/fashion_mnist/"
+  save_dir: "./saved_models/densenet121/"
