@@ -21,9 +21,9 @@ def densenet121_model(user_args):
     return model, criterion, optimizer, scheduler
 
 
-def save_model(cfg, model, runtime_str=RUNTIME_STR):
-    project_name = cfg.project_name
-    save_dir = cfg.training.save_dir
+def save_model(config, model, runtime_str=RUNTIME_STR):
+    project_name = config.project_name
+    save_dir = config.training.save_dir
 
     os.makedirs(save_dir, exist_ok=True)
     save_path = os.path.join(save_dir, f"{project_name}_{runtime_str}.pth")
