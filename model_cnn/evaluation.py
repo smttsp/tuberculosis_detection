@@ -3,6 +3,17 @@ import torch
 from sklearn.metrics import confusion_matrix
 
 
+def get_evaluation_metrics(y_pred, y_true):
+    tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
+    accuracy = (tp + tn) / (tp + fn + fp + tn)
+    sensitivity = tp / (tp + fn)
+    specificity = tn / (fp + tn)
+    precision = tp / (tp + fp)
+    f1score = (2 * tp) / (2 * tp + fn + fp)
+    evaluate_list = [[accuracy, precision, sensitivity, f1score, specificity]]
+    return evaluate_list
+
+
 def pytorch_predict(model, test_loader, device):
     """
     Make prediction from a pytorch model
@@ -28,13 +39,7 @@ def pytorch_predict(model, test_loader, device):
     _, y_pred = torch.max(all_outputs, 1)
     y_pred = y_pred.cpu().numpy()
 
-    TN, FP, FN, TP = confusion_matrix(y_true, y_pred).ravel()
-    accuracy = (TP + TN) / (TP + FN + FP + TN)
-    sensitivity = TP / (TP + FN)
-    specificity = TN / (FP + TN)
-    precision = TP / (TP + FP)
-    f1score = (2 * TP) / (2 * TP + FN + FP)
-    evaluate_list = [[accuracy, precision, sensitivity, f1score, specificity]]
+    evaluate_list = get_evaluation_metrics(y_pred, y_true)
     df = pandas.DataFrame(
         evaluate_list,
         columns=[
@@ -47,3 +52,11 @@ def pytorch_predict(model, test_loader, device):
         dtype=float,
     )
     return df
+
+
+def inference(model, image_path):
+    import torch
+
+    input_data = torch.tensor([1, 2, 3])
+
+    output = model(input_data)
