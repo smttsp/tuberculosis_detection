@@ -20,3 +20,4 @@ RUN poetry config virtualenvs.create false
 RUN poetry install --no-dev
 
 # CMD is specified when you run the Docker container
+CMD ["python", "inference_main.py"]
