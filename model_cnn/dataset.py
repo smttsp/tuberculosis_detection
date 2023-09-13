@@ -79,15 +79,6 @@ class ChestXRayDataset(torch.utils.data.Dataset):
         image = Image.open(image_path).convert("RGB")
         return self.transform(image), self.class_names.index(class_name)
 
-    def get_images(self, class_name):
-        images = [
-            x
-            for x in os.listdir(self.images[class_name])
-            if x.lower().endswith("png")
-        ]
-        print(f"Found {len(images)}{class_name}")
-        return images
-
 
 def split_image_list(
     root_dir,
