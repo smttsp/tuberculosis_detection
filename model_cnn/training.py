@@ -22,7 +22,10 @@ def train_model(
     num_epochs = user_args.num_epochs
 
     since = time.time()
-    tr = {DatasetType.train: train_loader, DatasetType.val: val_loader}
+    loader_dict = {
+        DatasetType.train: train_loader,
+        DatasetType.val: val_loader,
+    }
 
     best_model_wts = copy.deepcopy(model.state_dict())
     best_acc = 0.0
@@ -42,7 +45,7 @@ def train_model(
             running_corrects = 0
 
             # Iterate over data.
-            for inputs, labels in tr[phase]:
+            for inputs, labels in loader_dict[phase]:
                 inputs = inputs.to(DEVICE)
                 labels = labels.to(DEVICE)
 
@@ -67,8 +70,10 @@ def train_model(
             if is_training:
                 scheduler.step()
 
-            epoch_loss = running_loss / len(tr[phase].dataset)
-            epoch_acc = running_corrects.double() / len(tr[phase].dataset)
+            epoch_loss = running_loss / len(loader_dict[phase].dataset)
+            epoch_acc = running_corrects.double() / len(
+                loader_dict[phase].dataset
+            )
 
             print(f"{phase} Loss: {epoch_loss:.4f} Acc: {epoch_acc:.4f}")
 
