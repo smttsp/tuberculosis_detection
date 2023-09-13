@@ -31,5 +31,4 @@ def save_model(config, model, runtime_str=RUNTIME_STR):
     os.makedirs(save_dir, exist_ok=True)
     save_path = os.path.join(save_dir, f"{project_name}_{runtime_str}.pth")
     torch.save(obj=model, f=save_path)
-
     return None
