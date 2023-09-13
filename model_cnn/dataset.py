@@ -3,6 +3,7 @@ import random
 
 import torch
 import torchvision
+from constants import CLASS_NAMES, DatasetType
 from PIL import Image
 from torch.utils.data import DataLoader, random_split
 from torchvision import transforms
@@ -11,6 +12,48 @@ from torchvision import transforms
 torch.manual_seed(0)
 
 
+def get_train_transform():
+    return transforms.Compose(
+        [
+            transforms.RandomHorizontalFlip(),
+            transforms.Resize(size=(224, 224)),
+            transforms.RandomVerticalFlip(),
+            transforms.RandomRotation(20),
+            transforms.ToTensor(),
+            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+        ]
+    )
+
+
+def get_val_transform():
+    return transforms.Compose(
+        [
+            transforms.Resize(size=(224, 224)),
+            transforms.ToTensor(),
+            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+        ]
+    )
+
+
+def get_test_transform():
+    return transforms.Compose(
+        [
+            transforms.Resize(size=(224, 224)),
+            transforms.ToTensor(),
+            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+        ]
+    )
+
+
+def get_transform_main(dataset_type: DatasetType):
+    if dataset_type == DatasetType.train:
+        transform = get_train_transform()
+    elif dataset_type == DatasetType.val:
+        transform = get_val_transform()
+    else:
+        transform = get_test_transform()
+
+    return transform
 class ChestXRayDataset(torch.utils.data.Dataset):
     def __init__(self, root_dir, transform):
         self.images = {}
