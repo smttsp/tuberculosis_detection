@@ -1,6 +1,6 @@
 import sys
 
-from model_cnn.evaluation import get_model_prediction
+from model_cnn.inference import get_model_prediction
 
 
 if __name__ == "__main__":
