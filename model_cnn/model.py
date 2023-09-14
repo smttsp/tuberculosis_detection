@@ -3,9 +3,10 @@ import os
 import torch
 import torch.nn as nn
 import torchvision
-from constants import DEVICE, RUNTIME_STR
 from torch.optim import SGD, lr_scheduler
 from torchvision.models.densenet import DenseNet121_Weights
+
+from .constants import DEVICE, RUNTIME_STR
 
 
 def densenet121_model(user_args):

@@ -1,8 +1,12 @@
 import pandas
 import torch
-from dataset import get_test_transform
+import torch.nn as nn
+import torchvision
 from PIL import Image
 from sklearn.metrics import confusion_matrix
+
+from .constants import CLASS_NAMES
+from .dataset import get_test_transform
 
 
 def get_evaluation_metrics(y_pred, y_true):
@@ -67,3 +71,19 @@ def do_inference(model, image_path):
         output = model(input_data)
 
     return output
+
+
+def get_model_prediction(image_path):
+    model = torchvision.models.densenet121(weights=None)
+    num_features = model.classifier.in_features
+    model.classifier = nn.Sequential(nn.Linear(num_features, 2), nn.Sigmoid())
+
+    save_path = "model_cnn/saved_models/densenet121/best_model.pth"
+    weights = torch.load(f=save_path)
+    model.load_state_dict(weights)
+
+    x = do_inference(model, image_path=image_path)
+    _, y_pred = torch.max(x, 1)
+    pos = y_pred.cpu().numpy()[0]
+    print(pos)
+    print(f"Prediction is: {CLASS_NAMES[pos]}")

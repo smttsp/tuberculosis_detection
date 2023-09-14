@@ -2,10 +2,11 @@ import os
 import random
 
 import torch
-from constants import CLASS_NAMES, DatasetType
 from PIL import Image
 from torch.utils.data import DataLoader
 from torchvision import transforms
+
+from .constants import CLASS_NAMES, DatasetType
 
 
 torch.manual_seed(0)

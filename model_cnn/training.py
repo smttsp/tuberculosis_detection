@@ -2,8 +2,9 @@ import copy
 import time
 
 import torch
-from constants import DEVICE, DatasetType
-from model import save_model
+
+from .constants import DEVICE, DatasetType
+from .model import save_model
 
 
 torch.manual_seed(0)

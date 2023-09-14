@@ -2,11 +2,12 @@ from datetime import datetime
 
 import hydra
 import torch
-from constants import DEVICE, ROOT_DIR
-from dataset import get_loaders_main
-from evaluation import pytorch_predict
-from model import densenet121_model
-from training import train_model
+
+from .constants import DEVICE, ROOT_DIR
+from .dataset import get_loaders_main
+from .evaluation import pytorch_predict
+from .model import densenet121_model
+from .training import train_model
 
 
 torch.manual_seed(0)
