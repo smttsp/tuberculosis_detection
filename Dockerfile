@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . /app
 
 # Copy the model into the container
-# COPY model_cnn/saved_models/densenet121/best_model.pth /app/saved_models/densenet121/best_model.pth
+# COPY ~/Documents/models/tb_classification/densenet121/best_model.pth /app/models/tb_classification/densenet121/best_model.pth
 
 # Install poetry
 RUN pip install poetry

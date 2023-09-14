@@ -34,3 +34,6 @@ class DatasetType(str, Enum):
     train = "train"
     val = "val"
     test = "test"
+
+
+MODEL_PATH = "models/densenet121.pth"

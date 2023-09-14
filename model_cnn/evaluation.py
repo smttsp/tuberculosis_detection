@@ -5,8 +5,9 @@ import torchvision
 from PIL import Image
 from sklearn.metrics import confusion_matrix
 
-from .constants import CLASS_NAMES
+from .constants import CLASS_NAMES, MODEL_PATH
 from .dataset import get_test_transform
+import os
 
 
 def get_evaluation_metrics(y_pred, y_true):
@@ -73,13 +74,22 @@ def do_inference(model, image_path):
     return output
 
 
-def get_model_prediction(image_path):
+def get_full_path(path):
+    if "~" in path:
+        home_dir = os.path.expanduser("~")
+        path = path.replace("~", home_dir)
+
+    return path
+
+
+def get_model_prediction(image_path, model_path=MODEL_PATH):
     model = torchvision.models.densenet121(weights=None)
     num_features = model.classifier.in_features
     model.classifier = nn.Sequential(nn.Linear(num_features, 2), nn.Sigmoid())
 
-    save_path = "model_cnn/saved_models/densenet121/best_model.pth"
-    weights = torch.load(f=save_path)
+    path = get_full_path(model_path)
+
+    weights = torch.load(f=path)
     model.load_state_dict(weights)
 
     x = do_inference(model, image_path=image_path)
