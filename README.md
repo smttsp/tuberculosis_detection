@@ -11,6 +11,12 @@ contains
   - deployment of the model
 
 
+## Demo
+
+https://github.com/smttsp/tuberculosis_detection/assets/4594945/70501f04-af9e-49d8-8bd0-cb2fdf8bf738
+
+
+
 ## Installation
 
 ### Prerequisite: `pyenv`
