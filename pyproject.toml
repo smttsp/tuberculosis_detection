@@ -8,6 +8,8 @@ authors = ["samet <samettaspinarx@gmail.com>"]
 python = "^3.9"
 torch = "^2.0.1"
 torchvision = "^0.15.2"
+flask = "^2.3.3"
+flask-cors = "^4.0.0"
 
 [tool.poetry.group.dev.dependencies]
 typed-ast = "^1.5.5"
