@@ -1,3 +1,5 @@
+import os
+
 import torch
 import torch.nn as nn
 import torchvision
@@ -5,7 +7,6 @@ from PIL import Image
 
 from .constants import CLASS_NAMES, MODEL_PATH
 from .dataset import get_test_transform
-import os
 
 
 def do_inference(model, image_path):
