@@ -79,3 +79,12 @@ Similarly, frontend dependencies (currently `flask` and `flask-cors`) make the d
 
 To prevent this issue, I made all the model development libraries as `dev` dependencies. So that
 they are not included in the docker image. But this is just a trick, not the preferred way.
+
+
+## Data and Credit
+
+The data for this model training is obtained from Kaggle:
+
+https://www.kaggle.com/datasets/tawsifurrahman/tuberculosis-tb-chest-xray-dataset
+
+Kudos to the team and their amazing work for collecting such a useful dataset!
