@@ -6,15 +6,13 @@ contains
 - front-end
 - model training
 - back-end
-  - cloud function
-  - dockerization of the model
+  - cloud run
+  - dockerized model
   - deployment of the model
-
 
 ## Demo
 
 https://github.com/smttsp/tuberculosis_detection/assets/4594945/70501f04-af9e-49d8-8bd0-cb2fdf8bf738
-
 
 
 ## Installation
@@ -68,3 +66,16 @@ pip install poetry
 poetry install
 ```
 
+## Remarks
+
+In a more professional settings, this repo should be split into multiple pieces. A good split may be
+
+- model development repo
+- inference + dockerization + deployment repo
+- frontend
+
+Because model development dependencies will make the inference pipeline unnecessarily larger. 
+Similarly, frontend dependencies (currently `flask` and `flask-cors`) make the docker image larger.
+
+To prevent this issue, I made all the model development libraries as `dev` dependencies. So that
+they are not included in the docker image. But this is just a trick, not the preferred way.
