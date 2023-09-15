@@ -44,3 +44,4 @@ def get_model_prediction(image_path, model_path=MODEL_PATH):
     pos = y_pred.cpu().numpy()[0]
     print(pos)
     print(f"Prediction is: {CLASS_NAMES[pos]}")
+    return CLASS_NAMES[pos]
