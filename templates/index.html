@@ -45,6 +45,10 @@
             <input type="submit" value="Get Prediction">
         </form>
 
+        <div class="image-container">
+            <img id="uploaded-image" src="#" alt="Uploaded Image" style="display:none; max-width:80%; border: 7px solid black;">
+        </div>
+
         <div id="result">
             <!-- Prediction result will be displayed here -->
         </div>
@@ -52,28 +56,48 @@
 
     <script>
         document.getElementById('upload-form').addEventListener('submit', function (e) {
-            e.preventDefault();
+        e.preventDefault();
 
-            const formData = new FormData();
-            formData.append('image', document.querySelector('input[type=file]').files[0]);
+        // Display uploaded image
+        const imageElement = document.getElementById('uploaded-image');
+        const file = document.querySelector('input[type=file]').files[0];
+        const reader = new FileReader();
 
-            fetch('http://localhost:8080/predict', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                const resultDiv = document.getElementById('result');
-                if (data.error) {
-                    resultDiv.innerHTML = `<p>Error: ${data.error}</p>`;
-                } else {
-                    resultDiv.innerHTML = `<p>Prediction: ${data.prediction}</p>`;
+        reader.onloadend = function() {
+            imageElement.src = reader.result;
+            imageElement.style.display = 'block'; // Display the image
+            imageElement.style.border = "5px solid black"; // Reset to black border
+        }
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+
+        const formData = new FormData();
+        formData.append('image', file);
+
+        fetch('http://localhost:8080/predict', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            const resultDiv = document.getElementById('result');
+            if (data.error) {
+                resultDiv.innerHTML = `<p>Error: ${data.error}</p>`;
+            } else {
+                resultDiv.innerHTML = `<p>Prediction: ${data.prediction}</p>`;
+                if (data.prediction === "Normal") {
+                    imageElement.style.border = "7px solid green";
+                } else if (data.prediction === "Tuberculosis") {
+                    imageElement.style.border = "7px solid red";
                 }
-            })
-            .catch(error => {
-                console.error('Error uploading image:', error);
-            });
+            }
+        })
+        .catch(error => {
+            console.error('Error uploading image:', error);
         });
+    });
     </script>
 </body>
 
