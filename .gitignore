@@ -142,7 +142,7 @@ dmypy.json
 **.gz
 
 outputs/*
-**.pth
+#**.pth
 **.pt
 _data/**
 _model/**
