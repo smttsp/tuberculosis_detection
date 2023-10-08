@@ -1,14 +1,15 @@
 # Tuberculosis Detection
 
-This is an end-to-end tuberculosis detection tool which
-contains 
+This is an end-to-end tuberculosis classification tool that runs on Google Cloud. 
 
-- front-end
-- model training
+It contains 
+
+- model training pipeline using a DenseNet121 architecture was built. Then the model is dockerized to be put on GCP.
+- simple front-end where chest X-rays are given as input
 - back-end
-  - cloud run
-  - dockerized model
-  - deployment of the model
+  - a cloud run to call the model with the input image
+  - the dockerized model which is used by the cloud run to get the predictions
+    
 
 ## Demo
 
